@@ -10,15 +10,53 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_11_30_054939) do
-  create_table "products", force: :cascade do |t|
-    t.text "product_name"
-    t.float "price"
-    t.integer "stock"
-    t.text "scent"
-    t.text "consistency"
+ActiveRecord::Schema[7.1].define(version: 2023_11_30_191926) do
+  create_table "addresses", force: :cascade do |t|
+    t.string "address"
+    t.string "city"
+    t.string "province"
+    t.string "postal_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "customer_id", null: false
+    t.index ["customer_id"], name: "index_addresses_on_customer_id"
   end
 
+  create_table "customers", force: :cascade do |t|
+    t.string "customer_first"
+    t.string "customer_last"
+    t.integer "address_id"
+    t.string "email_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "password"
+    t.index ["address_id"], name: "index_customers_on_address_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.string "product_name"
+    t.integer "product_id"
+    t.integer "customer_id"
+    t.integer "tracking_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_orders_on_customer_id"
+    t.index ["product_id"], name: "index_orders_on_product_id"
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string "product_name"
+    t.float "price"
+    t.integer "stock"
+    t.string "scent"
+    t.string "consistency"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "usage"
+  end
+
+  add_foreign_key "addresses", "customers"
+  add_foreign_key "customers", "addresses"
+  add_foreign_key "orders", "customers"
+  add_foreign_key "orders", "products"
 end
