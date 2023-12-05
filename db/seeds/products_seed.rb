@@ -28,11 +28,11 @@ def create_products(usage)
       usage: usage
     )
 
-    if product.persisted?
-      puts "Product created: #{product.product_name}"
-    else
-      puts "Failed to create product with consistency: #{consistency}"
-    end
+    # if product.persisted?
+    #   puts "Product created: #{product.product_name}"
+    # else
+    #   puts "Failed to create product with consistency: #{consistency}"
+    # end
   end
 end
 
