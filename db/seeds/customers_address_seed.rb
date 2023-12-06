@@ -8,8 +8,6 @@ Customer.delete_all
   email_address = customer_first.downcase + Faker::Internet.email
   password = Faker::Internet.password
 
-  puts email_address
-
   # Create a customer with an associated address
   customer = Customer.create!(
     customer_first: customer_first,
@@ -24,5 +22,4 @@ Customer.delete_all
     }
   )
 
-  #puts "Customer ID: #{customer.id} Customer name: #{customer.customer_first} #{customer.customer_last} #{customer.email_address}" if customer.persisted?
 end
