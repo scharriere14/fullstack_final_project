@@ -5,7 +5,7 @@ ActiveAdmin.register Address do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  # permit_params :address, :city, :province, :postal_code, :customer_id
+  permit_params :address, :city, :province, :postal_code, :customer_id
   #
   # or
   #
@@ -14,5 +14,5 @@ ActiveAdmin.register Address do
   #   permitted << :other if params[:action] == 'create' && current_user.admin?
   #   permitted
   # end
-  
+
 end
