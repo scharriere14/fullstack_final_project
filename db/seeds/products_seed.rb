@@ -1,5 +1,3 @@
-
-# Deelte for testing. Comment out when in production
 Product.delete_all
 
 # products table
