@@ -1,16 +1,53 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>FinailProject</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
-  </head>
+<head>
+  <title><%= content_for?(:title) ? yield(:title) : "Your Default Title" %></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    body,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: "Raleway", sans-serif
+    }
+  </style>
+</head>
 
-  <body>
-    <%= yield %>
-  </body>
+<body class="w3-light-grey w3-content" style="max-width:1600px">
+
+  <!-- !PAGE CONTENT! -->
+  <div class="w3-main" style="margin-left:300px">
+    <!-- Header -->
+    <div class="w3-container">
+      <h1><b>Plannet Bubbles</b></h1>
+      <h2><i>Saving the planet one bubble at a time</i></h2>
+      <div class="w3-section w3-bottombar w3-padding-16" style="display: flex; justify-content: space-around;">
+        <%= link_to 'All Products', products_path %>
+        <%= link_to 'All Products', products_path %>
+        <%= link_to 'All Products', products_path %>
+        <%= link_to 'All Products', products_path %>
+        <div class="topnav">
+          <div class="search-container">
+            <form action="<%= search_path %>" method="get">
+              <input type="text" placeholder="Search.." name="search">
+              <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%= yield %>
+
+</body>
+
 </html>

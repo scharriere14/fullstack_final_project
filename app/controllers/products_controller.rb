@@ -3,7 +3,7 @@ class ProductsController < ApplicationController
 
   # GET /products or /products.json
   def index
-    @products = Product.all
+    @products = Product.paginate(page: params[:page], per_page: 10)
   end
 
   # GET /products/1 or /products/1.json
@@ -66,5 +66,9 @@ class ProductsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def product_params
       params.require(:product).permit(:product_name, :price, :stock, :scent, :consistency)
+    end
+
+    def search
+      @search_results = Product.search(params[:search])
     end
 end

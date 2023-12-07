@@ -1,14 +1,11 @@
-<p style="color: green"><%= notice %></p>
+    <div class="w3-container">
+    <h1><b>Plannet Bubbles</b></h1>
+       <h2><i>Saving the plannet one bubble at a time</i></h2>
+<div class="w3-section w3-bottombar w3-padding-16" style="display: flex; justify-content: space-around;">
 
-<h1>Products</h1>
 
-<div id="products">
-  <% @products.each do |product| %>
-    <%= render product %>
-    <p>
-      <%= link_to "Show this product", product %>
-    </p>
-  <% end %>
-</div>
+<% content_for :title, 'All Products' %>
+<%= will_paginate @products %>
 
-<%= link_to "New product", new_product_path %>
+<%= render partial: 'partials/product_box', collection: @products, as: :product %>
+<%= will_paginate @products %>
