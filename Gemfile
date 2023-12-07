@@ -70,9 +70,10 @@ group :test do
 end
 
 gem 'faker'
-gem 'activeadmin'
+gem 'activeadmin', '~> 3.1.0'
 gem 'devise'
 gem 'sassc', '~> 2.0'
 
+gem 'will_paginate', '~> 4.0'
 
 

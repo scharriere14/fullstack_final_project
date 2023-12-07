@@ -1,0 +1,12 @@
+<h1>Search Results</h1>
+
+<% if @search_results.present? %>
+  <p><%= @search_results.count %> Items Found</p>
+
+<% @search_results.each do |result| %>
+  <%= link_to result.product_name, result_path(result) %> <br>
+<% end %>
+
+<% else %>
+  <p>Nothing Found</p>
+<% end %>

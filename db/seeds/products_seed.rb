@@ -25,7 +25,9 @@ def create_products(usage)
       stock: Faker::Number.within(range: 1..100),
       scent: scent,
       consistency: consistency,
-      usage: usage
+      usage: usage,
+      description: Faker::Lorem.paragraph(sentence_count: 10
+      )
     )
 
     # if product.persisted?

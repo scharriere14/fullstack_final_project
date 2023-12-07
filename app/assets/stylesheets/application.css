@@ -1,15 +1,14 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS (and SCSS, if configured) file within this directory, lib/assets/stylesheets, or any plugin's
- * vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
- *= require_tree .
- *= require_self
- */
+/* Center the pagination links */
+.pagination {
+  display: flex;
+  justify-content: space-evenly; /* Use space-evenly to evenly space out the items */
+  background-color: rgb(145, 147, 148);
+  padding: 10px; /* Add padding to the pagination container as needed */
+}
+
+/* Remove the default list-style and padding */
+.pagination li {
+  list-style: none;
+  display: inline;
+  margin: 0; /* Remove any existing margin */
+}
