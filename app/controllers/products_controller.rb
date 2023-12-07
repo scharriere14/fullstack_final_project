@@ -1,5 +1,6 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: %i[ show edit update destroy ]
+  before_action :set_product, only: %i[show edit update destroy]
+  before_action :initialize_session, only: [:add_to_cart]
 
   # GET /products or /products.json
   def index
@@ -57,18 +58,28 @@ class ProductsController < ApplicationController
     end
   end
 
+  def add_to_cart
+    session[:cart] << params[:id]
+    redirect_to root_path
+  end
+
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_product
-      @product = Product.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def product_params
-      params.require(:product).permit(:product_name, :price, :stock, :scent, :consistency)
-    end
+  def initialize_session
+    session[:cart] ||= [] # Cart will be empty when arrive at site
+  end
 
-    def search
-      @search_results = Product.search(params[:search])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_product
+    @product = Product.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def product_params
+    params.require(:product).permit(:product_name, :price, :stock, :scent, :consistency)
+  end
+
+  def search
+    @search_results = Product.search(params[:search])
+  end
 end

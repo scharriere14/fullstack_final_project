@@ -6,7 +6,7 @@
 
   <p>
     <strong>Price:</strong>
-    <%= product.price %>
+<%= number_to_currency(product.price / 100.0) %>
   </p>
 
   <p>
@@ -23,5 +23,12 @@
     <strong>Consistency:</strong>
     <%= product.consistency %>
   </p>
+
+    <p>
+    <strong>Description:</strong>
+    <%= product.description %>
+  </p>
+
+  <p><%= link_to 'Add To Cart', add_to_cart_path(product.id), method: :post %> </p>
 
 </div>

@@ -1,9 +1,12 @@
-/* Center the pagination links */
 .pagination {
   display: flex;
-  justify-content: space-evenly; /* Use space-evenly to evenly space out the items */
+  justify-content: center; /* Center the pagination links */
   background-color: rgb(145, 147, 148);
   padding: 10px; /* Add padding to the pagination container as needed */
+  clear: both; /* Clear both sides to ensure it's on its own row */
+  margin-bottom: 20px;
+  font-size: larger;
+  background-color: grey;
 }
 
 /* Remove the default list-style and padding */
@@ -11,4 +14,11 @@
   list-style: none;
   display: inline;
   margin: 0; /* Remove any existing margin */
+}
+
+.products-container {
+  margin-top: 20px;
+  text-align: center; /* Center the products container */
+  background-color: grey;
+
 }

@@ -1,11 +1,19 @@
-    <div class="w3-container">
-    <h1><b>Plannet Bubbles</b></h1>
-       <h2><i>Saving the plannet one bubble at a time</i></h2>
-<div class="w3-section w3-bottombar w3-padding-16" style="display: flex; justify-content: space-around;">
+<div style="text-align: center; margin-top: 20px;">
+  <% content_for :title, 'All Products' %>
+</div>
+<div style="text-align: center; margin-top: 20px;">
+  <div class="pagination" style="clear: both;">
+    <%= will_paginate @products %>
+  </div>
+</div>
 
 
-<% content_for :title, 'All Products' %>
-<%= will_paginate @products %>
+<div class="products-container">
+  <%= render partial: 'partials/product_box', collection: @products, as: :product %>
+</div>
 
-<%= render partial: 'partials/product_box', collection: @products, as: :product %>
-<%= will_paginate @products %>
+<div style="text-align: center; margin-top: 20px;">
+  <div class="pagination" style="clear: both;">
+    <%= will_paginate @products %>
+  </div>
+</div>

@@ -21,7 +21,7 @@ def create_products(usage)
 
     product = Product.create(
       product_name: "#{scent} #{consistency} #{usage}",
-      price: Faker::Number.decimal(l_digits: 2),
+      price: price_in_cents = rand(1..99999),
       stock: Faker::Number.within(range: 1..100),
       scent: scent,
       consistency: consistency,
