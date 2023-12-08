@@ -1,14 +1,18 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: %i[show edit update destroy]
-  before_action :initialize_session, only: [:add_to_cart]
+  before_action :initialize_session
+  before_action :load_cart
 
   # GET /products or /products.json
   def index
+    initialize_session
     @products = Product.paginate(page: params[:page], per_page: 10)
   end
 
   # GET /products/1 or /products/1.json
   def show
+    @product = Product.find(params[:id])
+   # @cart_products = get_cart_products
+  # @cart = cart_products
   end
 
   # GET /products/new
@@ -58,16 +62,20 @@ class ProductsController < ApplicationController
     end
   end
 
-  def add_to_cart
-    session[:cart] << params[:id]
-    redirect_to root_path
-  end
+  # def add_to_cart
+  #   id = params[:id].to_i
+  #   session[:cart] << id unless session[:cart].include?(id)
+  #   redirect_to root_path
+  # end
 
-  private
+  # def remove_from_cart
+  #   id = params[:id].to_i
+  #   session[:cart].delete(id)
+  #   redirect_to root_path
+  # end
 
-  def initialize_session
-    session[:cart] ||= [] # Cart will be empty when arrive at site
-  end
+
+
 
   # Use callbacks to share common setup or constraints between actions.
   def set_product

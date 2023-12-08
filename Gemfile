@@ -75,5 +75,7 @@ gem 'devise'
 gem 'sassc', '~> 2.0'
 
 gem 'will_paginate', '~> 4.0'
+gem 'rails-ujs'
+
 
 

@@ -3,32 +3,29 @@
     <strong>Product name:</strong>
     <%= product.product_name %>
   </p>
-
   <p>
     <strong>Price:</strong>
-<%= number_to_currency(product.price / 100.0) %>
+    <%= number_to_currency(product.price / 100.0) %>
   </p>
-
   <p>
     <strong>Stock:</strong>
     <%= product.stock %>
   </p>
-
   <p>
     <strong>Scent:</strong>
     <%= product.scent %>
   </p>
-
   <p>
     <strong>Consistency:</strong>
     <%= product.consistency %>
   </p>
-
-    <p>
+  <p>
     <strong>Description:</strong>
     <%= product.description %>
   </p>
-
-  <p><%= link_to 'Add To Cart', add_to_cart_path(product.id), method: :post %> </p>
-
+  <% if @cart.include?(product) %>
+    <p>*Product is in your cart* <%= button_to 'remove from cart', remove_from_cart_path(product), method: :delete %></p>
+  <% else %>
+    <p><%= link_to 'Add To Cart', add_to_cart_path(product.id), method: :post %></p>
+  <% end %>
 </div>

@@ -6,18 +6,21 @@ Rails.application.routes.draw do
   resources :customers
   resources :orders
 
-  get 'result/:id', to: 'products#show', as: 'result'
   resources :products do
     collection do
       get 'search'
     end
+    post 'add_to_cart', on: :member
+    get 'remove_from_cart', on: :member
   end
+
+  get 'result/:id', to: 'products#show', as: 'result'
 get "up" => "rails/health#show", as: :rails_health_check
 get '/search', to: 'search#index', as: 'search'
 root 'about#index'
 
 post 'products/add_to_cart/:id', to: 'products#add_to_cart', as: 'add_to_cart'
 get 'products/add_to_cart/:id', to: 'products#add_to_cart' # Because of bugs
-delete 'products/remove_from_cart/:id', to: 'products#remove_from_cart', as: 'remove_from_cart'
+get 'products/remove_from_cart/:id', to: 'products#remove_from_cart', as: 'remove_from_cart'# Because of bugs
 
 end

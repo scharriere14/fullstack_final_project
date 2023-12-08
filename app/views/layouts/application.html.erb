@@ -2,8 +2,9 @@
 <html>
 
 <head>
-  <title><%= content_for?(:title) ? yield(:title) : "Your Default Title" %></title>
+  <title><%= content_for?(:title) ? yield(:title) : "Plannet Bubbles" %></title>
   <meta charset="UTF-8">
+  <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
@@ -29,6 +30,26 @@
     <div class="w3-container">
       <h1><b>Plannet Bubbles</b></h1>
       <h2><i>Saving the planet one bubble at a time</i></h2>
+
+<details>
+  <summary>
+    Shopping Cart
+  </summary>
+  <ul>
+    <% if @cart_products.present? %>
+      <% @cart_products.each do |product| %>
+        <li>
+          <%= product.product_name %> - <%= link_to 'remove from cart', remove_from_cart_path(product), method: :delete %>
+        </li>
+      <% end %>
+    <% else %>
+      <li>No items in the cart</li>
+    <% end %>
+  </ul>
+</details>
+
+
+
       <div class="w3-section w3-bottombar w3-padding-16" style="display: flex; justify-content: space-around;">
         <%= link_to 'All Products', products_path %>
         <%= link_to 'All Products', products_path %>
