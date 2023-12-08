@@ -12,7 +12,8 @@ ActiveAdmin.register Product do
   filter :consistency
   filter :usage
 
-   permit_params :product_name, :price, :stock, :scent, :consistency, :usage
+  permit_params :product_name, :price, :stock, :scent, :consistency, :description, :image
+
   #
   # or
   #

@@ -5,7 +5,9 @@ class ProductsController < ApplicationController
   # GET /products or /products.json
   def index
     initialize_session
-    @products = Product.paginate(page: params[:page], per_page: 10)
+    # @products = Product.paginate(page: params[:page], per_page: 10)
+    @products = Product.page(params[:page]).per(10)
+
   end
 
   # GET /products/1 or /products/1.json

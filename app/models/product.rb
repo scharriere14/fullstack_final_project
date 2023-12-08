@@ -1,5 +1,6 @@
 class Product < ApplicationRecord
   has_many :orders
+  has_one_attached :image
 
   def self.ransackable_attributes(auth_object = nil)
     ["consistency", "created_at", "id", "id_value", "price", "product_name", "scent", "stock", "updated_at", "usage", "description"]
