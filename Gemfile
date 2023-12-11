@@ -80,3 +80,7 @@ gem 'rails-ujs'
 gem 'kaminari', '~> 1.2.1'
 gem 'formtastic', '~> 5.0'
 gem 'ransack', '~> 4.1'
+
+gem 'image_processing'
+gem 'mini_magick'
+

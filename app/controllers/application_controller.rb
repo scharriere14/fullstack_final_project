@@ -23,14 +23,8 @@ class ApplicationController < ActionController::Base
 end
 
 
-
-private
-
-def initialize_session
-  session[:cart] ||= [] # Cart will be empty when arrive at site
-end
-
 def load_cart
+
 @cart = Product.find(session[:cart])
 end
 

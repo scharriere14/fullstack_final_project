@@ -1,10 +1,9 @@
-
-# Deelte for testing. Comment out when in production
+# Delete for testing. Comment out when in production
 Product.delete_all
 
-# products table
+# Products table
 def create_products(usage)
-  10.times do
+  10.times do |index|
     scent = Faker::Food.fruits
     consistency = Faker::Science.element_state
 
@@ -21,24 +20,28 @@ def create_products(usage)
 
     product = Product.create(
       product_name: "#{scent} #{consistency} #{usage}",
-      price: price_in_cents = rand(1..99999),
+      price: rand(1..2999),
       stock: Faker::Number.within(range: 1..100),
       scent: scent,
       consistency: consistency,
       usage: usage,
-      description: Faker::Lorem.paragraph(sentence_count: 10
-      )
+      description: Faker::Lorem.paragraph(sentence_count: 10)
     )
 
-    # if product.persisted?
-    #   puts "Product created: #{product.product_name}"
-    # else
-    #   puts "Failed to create product with consistency: #{consistency}"
-    # end
+    query = URI.encode_www_form_component([product.product_name])
+    downloaded_image = URI.open("https://source.unsplash.com/600x600/?#{query}")
+    product.image.attach(io: downloaded_image, filename: "m-#{[product.product_name].join('-')}.jpg")
+    sleep(1)
+
+    if product.persisted?
+      puts "Product #{index + 1} created: #{product.product_name}"
+    else
+      puts "Failed to create product with consistency: #{consistency}"
+    end
   end
 end
 
-# Create 10 of each products
+# Create 10 of each product
 create_products('Dish Soap')
 create_products('Laundry Soap')
 create_products('Hand Soap')
@@ -47,4 +50,3 @@ create_products('Bubble Bath')
 create_products('Shampoo')
 create_products('Conditioner')
 create_products('Lotion')
-
