@@ -78,3 +78,5 @@ gem 'sassc', '~> 2.0'
 gem 'rails-ujs'
 
 gem 'kaminari', '~> 1.2.1'
+gem 'formtastic', '~> 5.0'
+gem 'ransack', '~> 4.1'

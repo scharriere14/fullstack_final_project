@@ -11,8 +11,11 @@ ActiveAdmin.register Product do
   filter :scent
   filter :consistency
   filter :usage
+  #filter :image
+  #filter :image_cont, label: 'Image', as: :string
 
-  permit_params :product_name, :price, :stock, :scent, :consistency, :description, :image
+
+  permit_params :product_name, :price, :stock, :scent, :consistency, :description, :usage # :image
 
   #
   # or
