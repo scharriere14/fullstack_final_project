@@ -46,6 +46,11 @@
     <% else %>
       <li>No items in the cart</li>
     <% end %>
+
+    <%# buy now button  %>
+      <li><%= link_to 'Buy Now', checkout_create_path, method: :post, remote: true %></li>
+<%# <%= link_to 'Buy Now(withid)', checkout_create_path(product.id), method: :post, remote: true %> %>
+
   </ul>
 </details>
 

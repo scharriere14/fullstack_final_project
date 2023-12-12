@@ -29,7 +29,8 @@ Rails.application.routes.draw do
   # Stripe stuff
   scope '/checkout' do
     post '/create', to: 'checkout#create', as: "checkout_create"
-    get '/create.:id', to: 'checkout#create', as: 'checkout_create2'
+    # get '/create.:id', to: 'checkout#create', as: 'checkout_create2'
+    get '/create', to: 'checkout#create', as: 'checkout_create2'
 
     get 'cancel', to: 'checkout#cancel', as: 'checkout_cancel'
     get 'success', to: 'checkout#success', as: 'checkout_success'
