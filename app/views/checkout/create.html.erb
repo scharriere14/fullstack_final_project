@@ -1,0 +1,19 @@
+<%# <% if @product %> %>
+  <%# console.log('Product Name: <%= @product.product_name %>'); %>
+<%# <% else %> %>
+  <%# console.log('Product not found'); %>
+<%# <% end %> %>
+
+
+<script>
+
+ const stripe = Stripe('<%= Rails.configuration.stripe[:publishable_key] %>')
+
+stripe.redirectToCheckout({
+  sessionId: '<%= @session.id %>'
+
+}).then (function (result) {
+ console.log(result.error.message);
+});
+
+</script>

@@ -3,13 +3,15 @@ class AboutController < ApplicationController
 
   def index
     @products = Product.all
+    # @product = Product.find_by(product_name: 'Your Product Name')
+    #@product = Product.find_by(id: params[:product_id])
+
   end
 
   private
 
-  # Remove set_products method if not needed
-  # def set_products
-  #   @products = Product.all
-  # end
+  def set_products
+    @products = Product.all
+  end
 
 end

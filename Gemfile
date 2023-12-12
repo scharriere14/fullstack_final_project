@@ -84,3 +84,4 @@ gem 'ransack', '~> 4.1'
 gem 'image_processing'
 gem 'mini_magick'
 
+gem 'stripe'
