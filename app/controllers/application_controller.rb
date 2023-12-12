@@ -16,15 +16,12 @@ class ApplicationController < ActionController::Base
   private
 
   def initialize_session
-    session[:cart] ||= []  # Initialize session[:cart] to an empty array if it's nil
+    session[:cart] ||= [] # Initialize session[:cart] to an empty array if it's nil
     @cart = session[:cart]
     @cart_products = @cart.present? ? Product.where(id: @cart) : []
   end
 end
 
-
 def load_cart
-
-@cart = Product.find(session[:cart])
+  @cart = Product.find(session[:cart])
 end
-

@@ -85,3 +85,6 @@ gem 'image_processing'
 gem 'mini_magick'
 
 gem 'stripe'
+
+gem 'rubocop'
+gem 'rubocop-rails'

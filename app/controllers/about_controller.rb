@@ -4,8 +4,7 @@ class AboutController < ApplicationController
   def index
     @products = Product.all
     # @product = Product.find_by(product_name: 'Your Product Name')
-    #@product = Product.find_by(id: params[:product_id])
-
+    # @product = Product.find_by(id: params[:product_id])
   end
 
   private
@@ -13,5 +12,4 @@ class AboutController < ApplicationController
   def set_products
     @products = Product.all
   end
-
 end

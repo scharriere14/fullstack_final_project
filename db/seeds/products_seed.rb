@@ -7,46 +7,54 @@ def create_products(usage)
     scent = Faker::Food.fruits
     consistency = Faker::Science.element_state
 
-    next if consistency.downcase == 'unknown'
+    next if skip_product_creation?(consistency)
 
-    # Change consistency to 'powder' if it was 'gas'
-    if consistency.downcase == 'gas'
-      consistency = 'powder'
-    end
-    # Change consistency to 'whipped' if it was 'plasma'
-    if consistency.downcase == 'plasma'
-      consistency = 'whipped cream'
-    end
+    product = create_product(usage, scent, consistency)
 
-    product = Product.create(
-      product_name: "#{scent} #{consistency} #{usage}",
-      price: rand(1..2999),
-      stock: Faker::Number.within(range: 1..100),
-      scent: scent,
-      consistency: consistency,
-      usage: usage,
-      description: Faker::Lorem.paragraph(sentence_count: 10)
-    )
+    download_and_attach_image(product)
 
-    query = URI.encode_www_form_component([product.product_name])
-    downloaded_image = URI.open("https://source.unsplash.com/600x600/?#{query}")
-    product.image.attach(io: downloaded_image, filename: "m-#{[product.product_name].join('-')}.jpg")
-    sleep(1)
+    log_product_creation_result(index, product)
+  end
+end
 
-    if product.persisted?
-      puts "Product #{index + 1} created: #{product.product_name}"
-    else
-      puts "Failed to create product with consistency: #{consistency}"
-    end
+def skip_product_creation?(consistency)
+  consistency.downcase == "unknown"
+end
+
+def create_product(usage, scent, consistency)
+  Product.create(
+    product_name: "#{scent} #{consistency} #{usage}",
+    price:        rand(1..2999),
+    stock:        Faker::Number.within(range: 1..100),
+    scent:,
+    consistency:,
+    usage:,
+    description:  Faker::Lorem.paragraph(sentence_count: 10)
+  )
+end
+
+def download_and_attach_image(product)
+  query = URI.encode_www_form_component([product.product_name])
+  downloaded_image = URI.open("https://source.unsplash.com/600x600/?#{query}")
+  product.image.attach(io:       downloaded_image,
+                       filename: "m-#{[product.product_name].join('-')}.jpg")
+  sleep(1)
+end
+
+def log_product_creation_result(index, product)
+  if product.persisted?
+    Rails.logger.debug "Product #{index + 1} created: #{product.product_name}"
+  else
+    Rails.logger.debug "Failed to create product with consistency: #{product.consistency}"
   end
 end
 
 # Create 10 of each product
-create_products('Dish Soap')
-create_products('Laundry Soap')
-create_products('Hand Soap')
-create_products('Body Wash')
-create_products('Bubble Bath')
-create_products('Shampoo')
-create_products('Conditioner')
-create_products('Lotion')
+create_products("Dish Soap")
+create_products("Laundry Soap")
+create_products("Hand Soap")
+create_products("Body Wash")
+create_products("Bubble Bath")
+create_products("Shampoo")
+create_products("Conditioner")
+create_products("Lotion")

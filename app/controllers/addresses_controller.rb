@@ -1,56 +1,37 @@
 class AddressesController < ApplicationController
-  before_action :set_address, only: %i[ show edit update destroy ]
+  before_action :set_address, only: %i[show edit update destroy]
 
-  # GET /addresses or /addresses.json
   def index
     @addresses = Address.all
   end
 
-  # GET /addresses/1 or /addresses/1.json
   def show
+    # GET /addresses/1 or /addresses/1.json
   end
 
-  # GET /addresses/new
   def new
+    # GET /addresses/new
     @address = Address.new
   end
 
-  # GET /addresses/1/edit
   def edit
+    # GET /addresses/1/edit
   end
 
-  # POST /addresses or /addresses.json
   def create
+    # POST /addresses or /addresses.json
     @address = Address.new(address_params)
-
-    respond_to do |format|
-      if @address.save
-        format.html { redirect_to address_url(@address), notice: "Address was successfully created." }
-        format.json { render :show, status: :created, location: @address }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @address.errors, status: :unprocessable_entity }
-      end
-    end
+    respond_to_creation("Address was successfully created.")
   end
 
-  # PATCH/PUT /addresses/1 or /addresses/1.json
   def update
-    respond_to do |format|
-      if @address.update(address_params)
-        format.html { redirect_to address_url(@address), notice: "Address was successfully updated." }
-        format.json { render :show, status: :ok, location: @address }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @address.errors, status: :unprocessable_entity }
-      end
-    end
+    # PATCH/PUT /addresses/1 or /addresses/1.json
+    respond_to_creation("Address was successfully updated.")
   end
 
-  # DELETE /addresses/1 or /addresses/1.json
   def destroy
+    # DELETE /addresses/1 or /addresses/1.json
     @address.destroy!
-
     respond_to do |format|
       format.html { redirect_to addresses_url, notice: "Address was successfully destroyed." }
       format.json { head :no_content }
@@ -58,13 +39,26 @@ class AddressesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_address
-      @address = Address.find(params[:id])
-    end
 
+  def set_address
+    # Use callbacks to share common setup or constraints between actions.
+    @address = Address.find(params[:id])
+  end
+
+  def address_params
     # Only allow a list of trusted parameters through.
-    def address_params
-      params.require(:address).permit(:address, :city, :province, :postal_code)
+    params.require(:address).permit(:address, :city, :province, :postal_code)
+  end
+
+  def respond_to_creation(notice_message)
+    respond_to do |format|
+      if @address.save
+        format.html { redirect_to address_url(@address), notice: notice_message }
+        format.json { render :show, status: :created, location: @address }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @address.errors, status: :unprocessable_entity }
+      end
     end
+  end
 end
