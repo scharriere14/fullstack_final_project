@@ -29,4 +29,19 @@ Rails.application.routes.draw do
   get 'products/remove_from_cart/:id', to: 'products#remove_from_cart', as: 'remove_from_cart' # Because of bugs
 
   # Health check route
-  get "up" =>
+  get "up" => "rails/health#show", as: :rails_health_check
+
+  # Search route
+  get '/search', to: 'search#index', as: 'search'
+
+  # Root route
+  root 'about#index'
+
+  # Stripe-related routes
+  scope '/checkout' do
+    post '/create', to: 'checkout#create', as: "checkout_create"
+    get '/create', to: 'checkout#create', as: 'checkout_create2'
+    get 'cancel', to: 'checkout#cancel', as: 'checkout_cancel'
+    get 'success', to: 'checkout#success', as: 'checkout_success'
+  end
+end
