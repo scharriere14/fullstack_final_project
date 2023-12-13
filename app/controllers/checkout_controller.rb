@@ -6,6 +6,15 @@ class CheckoutController < ApplicationController
       handle_empty_cart
       return
     end
+
+    puts "Product IDs: #{product_ids.inspect}"
+
+  # Retrieve products based on IDs
+  products = Product.find(product_ids)
+
+  # Display total in cart
+  @total = calculate_total(products)
+
     process_checkout(product_ids)
   end
 
@@ -22,6 +31,7 @@ class CheckoutController < ApplicationController
 
   def handle_empty_cart
     flash[:alert] = "Your cart is empty"
+    @total = 0
     redirect_to root_path
   end
 
@@ -63,6 +73,12 @@ class CheckoutController < ApplicationController
       quantity:   1
     }
   end
+  def calculate_total(cart_products)
+    return 0 if cart_products.blank? # Check if cart_products is nil or empty
+
+    cart_products.sum(&:price)
+  end
+
 
   def calculate_gst_amount(products)
     (products.sum(&:price) * 0.05).to_i
@@ -74,7 +90,7 @@ class CheckoutController < ApplicationController
       mode:                 "payment",
       success_url:          "#{checkout_success_url}?session_id={CHECKOUT_SESSION_ID}",
       cancel_url:           checkout_cancel_url,
-      line_items:
+      line_items: line_items
     )
   end
 
