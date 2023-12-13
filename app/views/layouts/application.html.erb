@@ -44,8 +44,8 @@
       <li>No items in the cart</li>
     <% end %>
     <%# broken fix later  %>
-<li><p>Total: $<%= @total.present? ? @total / 100 : 0 %></p></li>
-<li><p>Debug - @total: <%= @total.inspect %></p></li>
+<%# <li><p>Total: $<%= @total.present? ? @total / 100 : 0 %></p></li> %>
+<%# <li><p>Debug - @total: <%= @total.inspect %></p></li> %>
 <li><%= link_to 'Buy Now', checkout_create_path, method: :post, remote: true %></li>
 
   </ul>

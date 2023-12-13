@@ -1,4 +1,6 @@
 class CheckoutController < ApplicationController
+  before_action :authenticate_user!, only: [:create]
+
   def create
     product_ids = @cart.to_a
 
@@ -28,6 +30,14 @@ class CheckoutController < ApplicationController
   end
 
   private
+
+  def authenticate_user!
+    # Use Devise helper method to check if the user is signed in
+    unless user_signed_in?
+      flash[:alert] = "You must be logged in to proceed with the checkout."
+      redirect_to new_user_session_path
+    end
+  end
 
   def handle_empty_cart
     flash[:alert] = "Your cart is empty"
