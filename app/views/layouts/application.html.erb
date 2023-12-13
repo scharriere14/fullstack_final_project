@@ -26,6 +26,13 @@
 <body class="w3-light-grey w3-content" style="max-width:1600px">
   <div class="w3-main" style="margin-left:300px">
     <div class="w3-container">
+    <%# sign in/out %>
+    <% if customer_signed_in? %>
+  <p>Welcome, <%= current_customer.email %></p>
+  <%= link_to 'Sign out', destroy_customer_session_path, method: :delete %>
+<% else %>
+  <%= link_to 'Sign in', new_customer_session_path %>
+<% end %>
       <h1><b>Plannet Bubbles</b></h1>
       <h2><i>Saving the planet one bubble at a time</i></h2>
       <details>
@@ -43,9 +50,9 @@
             <li>No items in the cart</li>
           <% end %>
           <!-- broken fix later -->
-           <li><p>Total: $<%= @total.present? ? @total / 100 : 0 %></p></li>
-           <li><p>Debug - @total: <%= @total.inspect %></p></li>
-          <li><%= link_to 'Buy Now', checkout_create_path, method: :post, remote: true</li> %>
+            <li><p>Total: $<%= @total.present? ? @total / 100 : 0 %></p></li>
+            <li><p>Debug - @total: <%= @total.inspect %></p></li>
+            <li><%= link_to 'Buy Now', checkout_create_path, method: :post, remote: true %></li>
         </ul>
       </details>
 

@@ -1,12 +1,13 @@
 class CustomersController < ApplicationController
-  before_action :set_customer, only: %i[show edit update destroy]
+  # before_action :set_customer, only: %i[show edit update destroy]
+  before_action :authenticate_customer!, only: %i[show edit update destroy]
 
   def index
     @customers = Customer.all
   end
 
   def show
-    # Your existing code for the show action
+    @customer = current_customer
   end
 
   def new

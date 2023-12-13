@@ -14,6 +14,19 @@ class ApplicationController < ActionController::Base
     redirect_to root_path
   end
 
+  def after_sign_in_path_for(resource)
+    if resource.is_a?(Customer)
+      root_path # or any other path you want to redirect to
+    else
+      super
+    end
+  end
+
+  def after_sign_out_path_for(resource_or_scope)
+    # Customize the sign-out redirect path here
+    root_path
+  end
+
   private
 
   def initialize_session

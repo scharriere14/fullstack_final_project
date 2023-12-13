@@ -26,9 +26,9 @@ def create_product(usage, scent, consistency)
     product_name: "#{scent} #{consistency} #{usage}",
     price:        rand(1..2999),
     stock:        Faker::Number.within(range: 1..100),
-    scent:,
-    consistency:,
-    usage:,
+    scent:,           # Fix: Pass the scent variable
+    consistency:,     # Fix: Pass the consistency variable
+    usage:,           # Fix: Pass the usage variable
     description:  Faker::Lorem.paragraph(sentence_count: 10)
   )
 end
