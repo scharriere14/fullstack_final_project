@@ -1,4 +1,3 @@
-<%# app>views>layouts>application.html.erb %>
 <!DOCTYPE html>
 <html>
 
@@ -19,7 +18,7 @@
     h4,
     h5,
     h6 {
-      font-family: "Raleway", sans-serif
+      font-family: "Raleway", sans-serif;
     }
   </style>
 </head>
@@ -29,27 +28,26 @@
     <div class="w3-container">
       <h1><b>Plannet Bubbles</b></h1>
       <h2><i>Saving the planet one bubble at a time</i></h2>
-<details>
-  <summary>
-    Shopping Cart
-  </summary>
-  <ul>
-    <% if @cart_products.present? %>
-      <% @cart_products.each do |product| %>
-        <li>
-  <%= product.product_name %> - $<%= product.price / 100 %> - <i><small><%= link_to 'remove from cart', remove_from_cart_path(product), method: :delete %></small></i>
-        </li>
-      <% end %>
-    <% else %>
-      <li>No items in the cart</li>
-    <% end %>
-    <%# broken fix later  %>
-<%# <li><p>Total: $<%= @total.present? ? @total / 100 : 0 %></p></li> %>
-<%# <li><p>Debug - @total: <%= @total.inspect %></p></li> %>
-<li><%= link_to 'Buy Now', checkout_create_path, method: :post, remote: true %></li>
-
-  </ul>
-</details>
+      <details>
+        <summary>
+          Shopping Cart
+        </summary>
+        <ul>
+          <% if @cart_products.present? %>
+            <% @cart_products.each do |product| %>
+              <li>
+                <%= product.product_name %> - $<%= product.price / 100 %> - <i><small><%= link_to 'remove from cart', remove_from_cart_path(product), method: :delete %></small></i>
+              </li>
+            <% end %>
+          <% else %>
+            <li>No items in the cart</li>
+          <% end %>
+          <!-- broken fix later -->
+          <!-- <li><p>Total: $<%= @total.present? ? @total / 100 : 0 %></p></li> -->
+          <!-- <li><p>Debug - @total: <%= @total.inspect %></p></li> -->
+          <li><%= link_to 'Buy Now', checkout_create_path, method: :post, remote: true %></li>
+        </ul>
+      </details>
 
       <div class="w3-section w3-bottombar w3-padding-16" style="display: flex; justify-content: space-around;">
         <%= link_to 'All Products', products_path %>
@@ -58,15 +56,13 @@
         <%= link_to 'All Products', products_path %>
         <div class="topnav">
           <div class="search-container">
-<!-- app/views/layouts/application.html.erb -->
-<form action="<%= search_path %>" method="get">
-  <input type="text" placeholder="Search.." name="search">
-  <%= select_tag :category, options_for_select(Product.pluck(:usage).uniq.unshift("All Categories"), params[:category]), prompt: "Select Category", name: "category" %>
-  <button type="submit"><i class="fa fa-search"></i></button>
-</form>
-
-</div>
-
+            <!-- app/views/layouts/application.html.erb -->
+            <form action="<%= search_path %>" method="get">
+              <input type="text" placeholder="Search.." name="search">
+              <%= select_tag :category, options_for_select(Product.pluck(:usage).uniq.unshift("All Categories"), params[:category]), prompt: "Select Category", name: "category" %>
+              <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
