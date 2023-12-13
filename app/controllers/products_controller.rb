@@ -38,7 +38,15 @@ class ProductsController < ApplicationController
   end
 
   def search
-    @search_results = Product.search(params[:search])
+    @keyword = params[:search]
+    @category = params[:category]
+
+    puts "Keyword: #{@keyword}"
+    puts "Category: #{@category}"
+
+    @products = Product.search(@keyword, @category)
+    puts @products.to_sql
+
   end
 
   private

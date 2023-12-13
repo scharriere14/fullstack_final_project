@@ -1,3 +1,4 @@
+<%# app>views>layouts>application.html.erb %>
 <!DOCTYPE html>
 <html>
 
@@ -24,14 +25,10 @@
 </head>
 
 <body class="w3-light-grey w3-content" style="max-width:1600px">
-
-  <!-- !PAGE CONTENT! -->
   <div class="w3-main" style="margin-left:300px">
-    <!-- Header -->
     <div class="w3-container">
       <h1><b>Plannet Bubbles</b></h1>
       <h2><i>Saving the planet one bubble at a time</i></h2>
-
 <details>
   <summary>
     Shopping Cart
@@ -47,9 +44,7 @@
       <li>No items in the cart</li>
     <% end %>
 
-    <%# buy now button  %>
       <li><%= link_to 'Buy Now', checkout_create_path, method: :post, remote: true %></li>
-<%# <%= link_to 'Buy Now(withid)', checkout_create_path(product.id), method: :post, remote: true %> %>
 
   </ul>
 </details>
@@ -61,11 +56,15 @@
         <%= link_to 'All Products', products_path %>
         <div class="topnav">
           <div class="search-container">
-            <form action="<%= search_path %>" method="get">
-              <input type="text" placeholder="Search.." name="search">
-              <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
-          </div>
+<!-- app/views/layouts/application.html.erb -->
+<form action="<%= search_path %>" method="get">
+  <input type="text" placeholder="Search.." name="search">
+  <%= select_tag :category, options_for_select(Product.pluck(:usage).uniq.unshift("All Categories"), params[:category]), prompt: "Select Category", name: "category" %>
+  <button type="submit"><i class="fa fa-search"></i></button>
+</form>
+
+</div>
+
         </div>
       </div>
     </div>

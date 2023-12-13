@@ -21,4 +21,23 @@ class Product < ApplicationRecord
   def result_path
     result_path(self)
   end
+
+  def self.search(keyword, category)
+    products = all
+
+    if keyword.present? && category.present? && category != "All Categories"
+      puts "DEBUG: Filtering by keyword: #{keyword}"
+      puts "DEBUG: Filtering by category: #{category}"
+      products = products.where("product_name LIKE ? AND TRIM(LOWER(usage)) = ?", "%#{keyword}%", category.downcase.strip)
+    elsif keyword.present? && (!category.present? || category == "All Categories")
+      puts "DEBUG: Filtering by keyword: #{keyword}"
+      products = products.where("product_name LIKE ?", "%#{keyword}%")
+    elsif category.present? && !keyword.present?
+      puts "DEBUG: Filtering by category: #{category}"
+      products = products.where("TRIM(LOWER(usage)) = ?", category.downcase.strip)
+    end
+
+    products
+  end
+
 end
