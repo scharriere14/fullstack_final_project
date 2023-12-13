@@ -4,10 +4,10 @@ class SearchController < ApplicationController
     keyword = params[:search]
     category = params[:category]
 
-    if keyword.present? || category.present?
-      @search_results = Product.search(keyword, category)
-    else
-      @search_results = Product.none
-    end
+    @search_results = if keyword.present? || category.present?
+                        Product.search(keyword, category)
+                      else
+                        Product.none
+                      end
   end
 end

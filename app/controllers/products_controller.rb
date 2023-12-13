@@ -41,12 +41,11 @@ class ProductsController < ApplicationController
     @keyword = params[:search]
     @category = params[:category]
 
-    puts "Keyword: #{@keyword}"
-    puts "Category: #{@category}"
+    Rails.logger.debug "Keyword: #{@keyword}"
+    Rails.logger.debug "Category: #{@category}"
 
     @products = Product.search(@keyword, @category)
-    puts @products.to_sql
-
+    Rails.logger.debug @products.to_sql
   end
 
   private

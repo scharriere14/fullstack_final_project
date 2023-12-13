@@ -9,13 +9,13 @@ class CheckoutController < ApplicationController
       return
     end
 
-    puts "Product IDs: #{product_ids.inspect}"
+    Rails.logger.debug "Product IDs: #{product_ids.inspect}"
 
-  # Retrieve products based on IDs
-  products = Product.find(product_ids)
+    # Retrieve products based on IDs
+    products = Product.find(product_ids)
 
-  # Display total in cart
-  @total = calculate_total(products)
+    # Display total in cart
+    @total = calculate_total(products)
 
     process_checkout(product_ids)
   end
@@ -33,10 +33,10 @@ class CheckoutController < ApplicationController
 
   def authenticate_user!
     # Use Devise helper method to check if the user is signed in
-    unless user_signed_in?
-      flash[:alert] = "You must be logged in to proceed with the checkout."
-      redirect_to new_user_session_path
-    end
+    return if user_signed_in?
+
+    flash[:alert] = "You must be logged in to proceed with the checkout."
+    redirect_to new_user_session_path
   end
 
   def handle_empty_cart
@@ -83,12 +83,12 @@ class CheckoutController < ApplicationController
       quantity:   1
     }
   end
+
   def calculate_total(cart_products)
     return 0 if cart_products.blank? # Check if cart_products is nil or empty
 
     cart_products.sum(&:price)
   end
-
 
   def calculate_gst_amount(products)
     (products.sum(&:price) * 0.05).to_i
@@ -100,7 +100,7 @@ class CheckoutController < ApplicationController
       mode:                 "payment",
       success_url:          "#{checkout_success_url}?session_id={CHECKOUT_SESSION_ID}",
       cancel_url:           checkout_cancel_url,
-      line_items: line_items
+      line_items:
     )
   end
 

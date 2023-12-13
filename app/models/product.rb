@@ -26,18 +26,18 @@ class Product < ApplicationRecord
     products = all
 
     if keyword.present? && category.present? && category != "All Categories"
-      puts "DEBUG: Filtering by keyword: #{keyword}"
-      puts "DEBUG: Filtering by category: #{category}"
-      products = products.where("product_name LIKE ? AND TRIM(LOWER(usage)) = ?", "%#{keyword}%", category.downcase.strip)
-    elsif keyword.present? && (!category.present? || category == "All Categories")
-      puts "DEBUG: Filtering by keyword: #{keyword}"
+      Rails.logger.debug "DEBUG: Filtering by keyword: #{keyword}"
+      Rails.logger.debug "DEBUG: Filtering by category: #{category}"
+      products = products.where("product_name LIKE ? AND TRIM(LOWER(usage)) = ?", "%#{keyword}%",
+                                category.downcase.strip)
+    elsif keyword.present? && (category.blank? || category == "All Categories")
+      Rails.logger.debug "DEBUG: Filtering by keyword: #{keyword}"
       products = products.where("product_name LIKE ?", "%#{keyword}%")
-    elsif category.present? && !keyword.present?
-      puts "DEBUG: Filtering by category: #{category}"
+    elsif category.present? && keyword.blank?
+      Rails.logger.debug "DEBUG: Filtering by category: #{category}"
       products = products.where("TRIM(LOWER(usage)) = ?", category.downcase.strip)
     end
 
     products
   end
-
 end

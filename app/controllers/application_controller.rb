@@ -2,7 +2,6 @@ class ApplicationController < ActionController::Base
   before_action :initialize_session
   before_action :authenticate_customer!
 
-
   def add_to_cart
     id = params[:id].to_i
     session[:cart] << id unless session[:cart].include?(id)
