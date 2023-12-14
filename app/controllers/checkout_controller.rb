@@ -1,3 +1,4 @@
+# app > controllers && controllers > checkout_controller.rb
 class CheckoutController < ApplicationController
   before_action :authenticate_user!, only: [:create]
 
@@ -12,10 +13,14 @@ class CheckoutController < ApplicationController
     Rails.logger.debug "Product IDs: #{product_ids.inspect}"
 
     # Retrieve products based on IDs
-    products = Product.find(product_ids)
+    Product.find(product_ids)
 
     # Display total in cart
+    # @total = calculate_total(products)
+    products = Product.find(product_ids)
+
     @total = calculate_total(products)
+    session[:cart_total] = @total # Store the total in the session
 
     process_checkout(product_ids)
   end
@@ -84,10 +89,10 @@ class CheckoutController < ApplicationController
     }
   end
 
-  def calculate_total(cart_products)
-    return 0 if cart_products.blank? # Check if cart_products is nil or empty
+  def calculate_total(products)
+    return 0 if products.blank? # Check if cart_products is nil or empty
 
-    cart_products.sum(&:price)
+    products.sum(&:price).to_i
   end
 
   def calculate_gst_amount(products)

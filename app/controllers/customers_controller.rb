@@ -1,13 +1,19 @@
 class CustomersController < ApplicationController
   # before_action :set_customer, only: %i[show edit update destroy]
-  before_action :authenticate_customer!, only: %i[show edit update destroy]
+  # before_action :authenticate_customer!, only: %i[show edit update destroy]
+  before_action :set_customer, only: [:destroy]
 
   def index
     @customers = Customer.all
   end
 
   def show
-    @customer = current_customer
+    if customer_signed_in?
+
+      @customer = current_customer
+    else
+      redirect_to root_path, alert: "Please sign in to view this page."
+    end
   end
 
   def new

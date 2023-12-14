@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :initialize_session
+  before_action :initialize_session, only: [:show]
   before_action :load_cart
   before_action :set_product, only: %i[show edit update destroy]
 
@@ -9,7 +9,8 @@ class ProductsController < ApplicationController
   end
 
   def show
-    # Your existing code for the show action
+    @product = Product.find(params[:id])
+    initialize_session if @cart.blank?
   end
 
   def new

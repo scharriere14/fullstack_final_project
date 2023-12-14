@@ -23,5 +23,5 @@ Customer.delete_all
     }
   )
 
-  puts "Customer #{i + 1} created: #{customer.email}"
+  Rails.logger.debug "Customer #{i + 1} created: #{customer.email}"
 end
