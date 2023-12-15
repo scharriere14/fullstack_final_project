@@ -1,3 +1,4 @@
+# app > controllers && controllers > checkout_controller.rb
 class CheckoutController < ApplicationController
   include GstCalculator
 
@@ -6,7 +7,10 @@ class CheckoutController < ApplicationController
   def create
     product_ids = @cart.to_a
 
-    return handle_empty_cart if product_ids.empty?
+    if product_ids.empty?
+      handle_empty_cart
+      return
+    end
 
     log_product_ids(product_ids)
     products = retrieve_products(product_ids)
@@ -39,6 +43,7 @@ class CheckoutController < ApplicationController
   end
 
   def authenticate_user!
+    # Use Devise helper method to check if the user is signed in
     return if customer_signed_in?
 
     flash[:alert] = "You must be logged in to proceed with the checkout."
@@ -65,52 +70,28 @@ class CheckoutController < ApplicationController
   end
 
   def build_line_item(product)
-    Rails.logger.debug line_item_debug_info(product)
-
     {
-      price_data: line_item_price_data(product),
+      price_data: build_price_data(product),
       quantity:   1
     }
   end
 
-  def line_item_price_data(product)
+  def build_price_data(product)
     {
       currency:     "cad",
-      product_data: {
-        name: product.product_name
-      },
+      product_data: build_product_data(product),
       unit_amount:  product.price.to_i
     }
   end
 
-  def build_gst_item(products, province)
+  def build_product_data(product)
     {
-      price_data: {
-        currency:     "cad",
-        product_data: {
-          name: "GST"
-        },
-        unit_amount:  calculate_gst_amount(products, province)
-      },
-      quantity:   1
+      name: product.product_name
     }
   end
 
-  def calculate_total(products)
-    return 0 if products.blank?
-
-    products.sum(&:price).to_i
-  end
-
-  def calculate_gst_amount(products, province)
-    gst_rate = case province.downcase
-               when "manitoba" then 0.07
-               when "quebec" then 0.16
-               else 0.05
-               end
-
-    (products.sum(&:price) * gst_rate).to_i
-  end
+  # Removed the duplicate methods build_gst_item and calculate_gst_amount
+  # as they are now included from the GstCalculator concern.
 
   def create_stripe_session(line_items)
     Stripe::Checkout::Session.create(

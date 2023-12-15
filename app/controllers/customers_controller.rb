@@ -1,12 +1,19 @@
 class CustomersController < ApplicationController
-  before_action :set_customer, only: %i[show edit update destroy]
+  # before_action :set_customer, only: %i[show edit update destroy]
+  # before_action :authenticate_customer!, only: %i[show edit update destroy]
+  before_action :set_customer, only: [:destroy]
 
   def index
     @customers = Customer.all
   end
 
   def show
-    # Your existing code for the show action
+    if customer_signed_in?
+
+      @customer = current_customer
+    else
+      redirect_to root_path, alert: "Please sign in to view this page."
+    end
   end
 
   def new
@@ -19,6 +26,8 @@ class CustomersController < ApplicationController
 
   def create
     @customer = Customer.new(customer_params)
+    @customer.build_address if @customer.address.nil?
+
     respond_to_save(:show, "Customer was successfully created.")
   end
 
@@ -41,18 +50,31 @@ class CustomersController < ApplicationController
   end
 
   def customer_params
-    params.require(:customer).permit(:customer_first, :customer_last, :email_address)
+    params.require(:customer).permit(:email, :customer_first, :customer_last,
+                                     address_attributes: %i[id address city postal_code])
   end
 
   def respond_to_save(action, notice)
     respond_to do |format|
       if @customer.save
-        format.html { redirect_to customer_url(@customer), notice: }
-        format.json { render action, status: :created, location: @customer }
+        handle_successful_save(format, action, notice)
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @customer.errors, status: :unprocessable_entity }
+        handle_unsuccessful_save(format, action)
       end
     end
+  end
+
+  def handle_successful_save(format, action, notice)
+    format.html { redirect_to redirect_path(action), notice: }
+    format.json { render action, status: :created, location: @customer }
+  end
+
+  def handle_unsuccessful_save(format, action)
+    format.html { render action == :new ? :new : :edit, status: :unprocessable_entity }
+    format.json { render json: @customer.errors, status: :unprocessable_entity }
+  end
+
+  def redirect_path(action)
+    action == :show ? customer_url(@customer) : root_path
   end
 end

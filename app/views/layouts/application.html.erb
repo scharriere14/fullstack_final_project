@@ -2,53 +2,77 @@
 <html>
 
 <head>
-  <title><%= content_for?(:title) ? yield(:title) : "Plannet Bubbles" %></title>
-  <meta charset="UTF-8">
-  <%= csrf_meta_tags %>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://js.stripe.com/v3/"></script>
-  <style>
-    body,
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      font-family: "Raleway", sans-serif
-    }
-  </style>
-</head>
+    <title><%= content_for?(:title) ? yield(:title) : "Plannet Bubbles" %></title>
+    <meta charset="UTF-8">
+    <%= csrf_meta_tags %>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://js.stripe.com/v3/"></script>
+    <%= javascript_include_tag 'rails-ujs'%>
+
+    <style>
+      body,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-family: "Raleway", sans-serif;
+      }
+    </style>
+  </head>
 
 <body class="w3-light-grey w3-content" style="max-width:1600px">
   <div class="w3-main" style="margin-left:300px">
     <div class="w3-container">
+    <%# sign in/out %>
+    <% if customer_signed_in? %>
+  <p>Welcome, <%= current_customer.email %></p>
+<%= link_to 'Sign out', destroy_customer_session_path, method: :delete, onclick: "return confirm('Are you sure?');" %>
+<% else %>
+  <%= link_to 'Sign in', new_customer_session_path %>
+<% end %>
       <h1><b>Plannet Bubbles</b></h1>
       <h2><i>Saving the planet one bubble at a time</i></h2>
+      <% @total = session[:cart_total] || 0 %>
 
-<details>
-  <summary>
-    Shopping Cart
-  </summary>
-  <ul>
-    <% if @cart_products.present? %>
-      <% @cart_products.each do |product| %>
-        <li>
-          <%= product.product_name %> - <%= link_to 'remove from cart', remove_from_cart_path(product), method: :delete %>
-        </li>
-      <% end %>
-    <% else %>
-      <li>No items in the cart</li>
-    <% end %>
+      <details>
+        <summary>
+          Shopping Cart
+        </summary>
+        <ul>
+        <!-- Initialize totalprice before the loop -->
+        <% totalprice = 0 %>
+          <% if @cart_products.present? %>
+            <% @cart_products.each do |product| %>
+              <li>
+                <%= product.product_name %> - $<%= product.price / 100 %> - <i><small><%= link_to 'remove from cart', remove_from_cart_path(product), method: :delete %></small></i>
+              </li>
+<% totalprice += product.price %>
+            <% end %>
+          <% else %>
+            <li>No items in the cart</li>
+          <% end %>
 
-    <%# buy now button  %>
-      <li><%= link_to 'Buy Now', checkout_create_path, method: :post, remote: true %></li>
+            <li><p>Total: $<%= totalprice / 100 %></p></li>
 
-  </ul>
-</details>
+<% if customer_signed_in? %>
+  <form action="<%= checkout_create_path %>" method="post" remote="true" data-turbo="false">
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <li><%= submit_tag 'Buy Now' %></li>
+  </form>
+<% else %>
+  <li><%= link_to 'Sign in/Up before Checking Out Please', new_customer_session_path, data: { turbo: false } %></li>
+<% end %>
+
+
+
+
+      </ul>
+     </details>
 
       <div class="w3-section w3-bottombar w3-padding-16" style="display: flex; justify-content: space-around;">
         <%= link_to 'All Products', products_path %>
@@ -57,8 +81,10 @@
         <%= link_to 'All Products', products_path %>
         <div class="topnav">
           <div class="search-container">
+            <!-- app/views/layouts/application.html.erb -->
             <form action="<%= search_path %>" method="get">
               <input type="text" placeholder="Search.." name="search">
+              <%= select_tag :category, options_for_select(Product.pluck(:usage).uniq.unshift("All Categories"), params[:category]), prompt: "Select Category", name: "category" %>
               <button type="submit"><i class="fa fa-search"></i></button>
             </form>
           </div>

@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :initialize_session
+  before_action :initialize_session, only: [:show]
   before_action :load_cart
   before_action :set_product, only: %i[show edit update destroy]
 
@@ -9,7 +9,8 @@ class ProductsController < ApplicationController
   end
 
   def show
-    # Your existing code for the show action
+    @product = Product.find(params[:id])
+    initialize_session if @cart.blank?
   end
 
   def new
@@ -38,7 +39,14 @@ class ProductsController < ApplicationController
   end
 
   def search
-    @search_results = Product.search(params[:search])
+    @keyword = params[:search]
+    @category = params[:category]
+
+    Rails.logger.debug "Keyword: #{@keyword}"
+    Rails.logger.debug "Category: #{@category}"
+
+    @products = Product.search(@keyword, @category)
+    Rails.logger.debug @products.to_sql
   end
 
   private

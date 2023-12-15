@@ -88,3 +88,4 @@ gem 'stripe'
 
 gem 'rubocop'
 gem 'rubocop-rails'
+
