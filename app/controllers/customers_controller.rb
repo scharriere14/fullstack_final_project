@@ -57,14 +57,24 @@ class CustomersController < ApplicationController
   def respond_to_save(action, notice)
     respond_to do |format|
       if @customer.save
-        format.html do
-          redirect_to action == :show ? customer_url(@customer) : root_path, notice:
-        end
-        format.json { render action, status: :created, location: @customer }
+        handle_successful_save(format, action, notice)
       else
-        format.html { render action == :new ? :new : :edit, status: :unprocessable_entity }
-        format.json { render json: @customer.errors, status: :unprocessable_entity }
+        handle_unsuccessful_save(format, action)
       end
     end
+  end
+
+  def handle_successful_save(format, action, notice)
+    format.html { redirect_to redirect_path(action), notice: }
+    format.json { render action, status: :created, location: @customer }
+  end
+
+  def handle_unsuccessful_save(format, action)
+    format.html { render action == :new ? :new : :edit, status: :unprocessable_entity }
+    format.json { render json: @customer.errors, status: :unprocessable_entity }
+  end
+
+  def redirect_path(action)
+    action == :show ? customer_url(@customer) : root_path
   end
 end

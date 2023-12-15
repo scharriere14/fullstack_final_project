@@ -56,9 +56,11 @@ module Customers
     # If you have extra params to permit, append them to the sanitizer.
     def configure_sign_up_params
       devise_parameter_sanitizer.permit(:sign_up,
-                                        keys: [:email, :password, :password_confirmation, :customer_first, :customer_last, {
-                                          address_attributes: %i[address city postal_code province]
-                                        }])
+                                        keys: [:email, :password, :password_confirmation,
+                                               :customer_first, :customer_last, {
+                                                 address_attributes: %i[address city postal_code
+                                                                        province]
+                                               }])
     end
 
     # If you have extra params to permit, append them to the sanitizer.

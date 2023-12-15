@@ -1,4 +1,3 @@
-# app > controllers && controllers > checkout_controller.rb
 class CheckoutController < ApplicationController
   include GstCalculator
 
@@ -7,10 +6,7 @@ class CheckoutController < ApplicationController
   def create
     product_ids = @cart.to_a
 
-    if product_ids.empty?
-      handle_empty_cart
-      return
-    end
+    return handle_empty_cart if product_ids.empty?
 
     log_product_ids(product_ids)
     products = retrieve_products(product_ids)
@@ -43,7 +39,6 @@ class CheckoutController < ApplicationController
   end
 
   def authenticate_user!
-    # Use Devise helper method to check if the user is signed in
     return if customer_signed_in?
 
     flash[:alert] = "You must be logged in to proceed with the checkout."
@@ -70,17 +65,21 @@ class CheckoutController < ApplicationController
   end
 
   def build_line_item(product)
-    Rails.logger.debug "Product: #{product.product_name}, Price: #{product.price}, Unit Amount: #{product.price}"
+    Rails.logger.debug line_item_debug_info(product)
 
     {
-      price_data: {
-        currency:     "cad",
-        product_data: {
-          name: product.product_name
-        },
-        unit_amount:  product.price.to_i
-      },
+      price_data: line_item_price_data(product),
       quantity:   1
+    }
+  end
+
+  def line_item_price_data(product)
+    {
+      currency:     "cad",
+      product_data: {
+        name: product.product_name
+      },
+      unit_amount:  product.price.to_i
     }
   end
 
@@ -98,19 +97,16 @@ class CheckoutController < ApplicationController
   end
 
   def calculate_total(products)
-    return 0 if products.blank? # Check if cart_products is nil or empty
+    return 0 if products.blank?
 
     products.sum(&:price).to_i
   end
 
   def calculate_gst_amount(products, province)
     gst_rate = case province.downcase
-               when "manitoba"
-                 0.07
-               when "quebec"
-                 0.16
-               else
-                 0.05 # Default GST rate for other provinces
+               when "manitoba" then 0.07
+               when "quebec" then 0.16
+               else 0.05
                end
 
     (products.sum(&:price) * gst_rate).to_i
