@@ -15,7 +15,7 @@ module Customers
     def create
       super do |resource|
         if resource.persisted? # Check if the customer is saved successfully
-          address_params = {
+          {
             address:     params[:customer][:address],
             city:        params[:customer][:city],
             postal_code: params[:customer][:postal_code]

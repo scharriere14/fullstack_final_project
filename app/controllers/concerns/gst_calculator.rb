@@ -70,51 +70,28 @@ class CheckoutController < ApplicationController
   end
 
   def build_line_item(product)
-    Rails.logger.debug "Product: #{product.product_name}, Price: #{product.price}, Unit Amount: #{product.price}"
-
     {
-      price_data: {
-        currency:     "cad",
-        product_data: {
-          name: product.product_name
-        },
-        unit_amount:  product.price.to_i
-      },
+      price_data: build_price_data(product),
       quantity:   1
     }
   end
 
-  def build_gst_item(products, province)
+  def build_price_data(product)
     {
-      price_data: {
-        currency:     "cad",
-        product_data: {
-          name: "GST"
-        },
-        unit_amount:  calculate_gst_amount(products, province)
-      },
-      quantity:   1
+      currency:     "cad",
+      product_data: build_product_data(product),
+      unit_amount:  product.price.to_i
     }
   end
 
-  def calculate_total(products)
-    return 0 if products.blank? # Check if cart_products is nil or empty
-
-    products.sum(&:price).to_i
+  def build_product_data(product)
+    {
+      name: product.product_name
+    }
   end
 
-  def calculate_gst_amount(products, province)
-    gst_rate = case province.downcase
-               when "manitoba"
-                 0.07
-               when "quebec"
-                 0.16
-               else
-                 0.05 # Default GST rate for other provinces
-               end
-
-    (products.sum(&:price) * gst_rate).to_i
-  end
+  # Removed the duplicate methods build_gst_item and calculate_gst_amount
+  # as they are now included from the GstCalculator concern.
 
   def create_stripe_session(line_items)
     Stripe::Checkout::Session.create(
