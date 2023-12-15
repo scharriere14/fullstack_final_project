@@ -2,8 +2,11 @@
 
 Rails.application.routes.draw do
   # Devise for customers
-  devise_for :customers, controllers: { sessions: 'customers/sessions' }
-  # ActiveAdmin for admin users
+  devise_for :customers, controllers: {
+    sessions: 'customers/sessions',
+    registrations: 'customers/registrations'
+  }
+    # ActiveAdmin for admin users
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 

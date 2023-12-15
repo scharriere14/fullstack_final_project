@@ -2,7 +2,7 @@
 
 module Customers
   class RegistrationsController < Devise::RegistrationsController
-    # before_action :configure_sign_up_params, only: [:create]
+    before_action :configure_sign_up_params, only: [:create]
     # before_action :configure_account_update_params, only: [:update]
 
     # GET /resource/sign_up
@@ -11,9 +11,16 @@ module Customers
     # end
 
     # POST /resource
-    # def create
-    #   super
-    # end
+    def create
+      super do |resource|
+        address_params = {
+          address:     params[:customer][:address],
+          city:        params[:customer][:city],
+          postal_code: params[:customer][:postal_code]
+        }
+        resource.create_address(address_params)
+      end
+    end
 
     # GET /resource/edit
     # def edit
@@ -39,9 +46,11 @@ module Customers
     # protected
 
     # If you have extra params to permit, append them to the sanitizer.
-    # def configure_sign_up_params
-    #   devise_parameter_sanitizer.permit(:sign_up, keys: [:attribute])
-    # end
+    def configure_sign_up_params
+      devise_parameter_sanitizer.permit(:sign_up,
+                                        keys: %i[email password password_confirmation address city
+                                                 postal_code])
+    end
 
     # If you have extra params to permit, append them to the sanitizer.
     # def configure_account_update_params
