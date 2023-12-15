@@ -5,8 +5,17 @@ ActiveAdmin.register Customer do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-   permit_params :customer_first, :customer_last, :address_id, :email_address, :password
+   permit_params :customer_first, :customer_last, :address_id, :email, :password
   #
+  index do
+    selectable_column
+    id_column
+    column :customer_first
+    column :customer_last
+    column :address_id
+    column :email
+    actions
+  end
   # or
   #
   # permit_params do
