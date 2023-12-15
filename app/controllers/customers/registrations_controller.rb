@@ -20,7 +20,12 @@ module Customers
             city:        params[:customer][:city],
             postal_code: params[:customer][:postal_code]
           }
-          resource.create_address(address_params)
+
+          # # Remove the existing associated address
+          # resource.address&.destroy
+
+          # Create a new address
+          # resource.create_address(address_params)
         end
       end
     end
@@ -51,8 +56,9 @@ module Customers
     # If you have extra params to permit, append them to the sanitizer.
     def configure_sign_up_params
       devise_parameter_sanitizer.permit(:sign_up,
-                                        keys: %i[email password password_confirmation address city
-                                                 postal_code customer_first customer_last])
+                                        keys: [:email, :password, :password_confirmation, :customer_first, :customer_last, {
+                                          address_attributes: %i[address city postal_code province]
+                                        }])
     end
 
     # If you have extra params to permit, append them to the sanitizer.
