@@ -11,7 +11,7 @@ def create_products(usage)
 
     product = create_product(usage, scent, consistency)
 
-    download_and_attach_image(product)
+    # download_and_attach_image(product) un comment for final testings
 
     log_product_creation_result(index, product)
   end
@@ -51,10 +51,10 @@ end
 
 # Create 10 of each product
 create_products("Dish Soap")
-create_products("Laundry Soap")
-create_products("Hand Soap")
-create_products("Body Wash")
-create_products("Bubble Bath")
-create_products("Shampoo")
-create_products("Conditioner")
-create_products("Lotion")
+# create_products("Laundry Soap")
+# create_products("Hand Soap")
+# create_products("Body Wash")
+# create_products("Bubble Bath")
+# create_products("Shampoo")
+# create_products("Conditioner")
+# create_products("Lotion")

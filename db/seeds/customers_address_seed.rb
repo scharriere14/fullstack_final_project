@@ -16,7 +16,7 @@ Customer.delete_all
     customer_first:,
     customer_last:,
     address_attributes: {
-      address:     Faker::Address.street_address + Faker::Address.street_address + Faker::Address.street_suffix,
+      address:     Faker::Address.street_address + " " + Faker::Address.street_suffix,
 
       city:        Faker::Address.city,
       province:    Faker::Address.province,
