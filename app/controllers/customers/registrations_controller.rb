@@ -14,12 +14,14 @@ module Customers
     # POST /resource
     def create
       super do |resource|
-        address_params = {
-          address:     params[:customer][:address],
-          city:        params[:customer][:city],
-          postal_code: params[:customer][:postal_code]
-        }
-        resource.create_address(address_params)
+        if resource.persisted? # Check if the customer is saved successfully
+          address_params = {
+            address:     params[:customer][:address],
+            city:        params[:customer][:city],
+            postal_code: params[:customer][:postal_code]
+          }
+          resource.create_address(address_params)
+        end
       end
     end
 
@@ -50,7 +52,7 @@ module Customers
     def configure_sign_up_params
       devise_parameter_sanitizer.permit(:sign_up,
                                         keys: %i[email password password_confirmation address city
-                                                 postal_code])
+                                                 postal_code customer_first customer_last])
     end
 
     # If you have extra params to permit, append them to the sanitizer.

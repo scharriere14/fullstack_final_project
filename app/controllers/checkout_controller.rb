@@ -38,7 +38,7 @@ class CheckoutController < ApplicationController
 
   def authenticate_user!
     # Use Devise helper method to check if the user is signed in
-    return if user_signed_in?
+    return if customer_signed_in?
 
     flash[:alert] = "You must be logged in to proceed with the checkout."
     redirect_to new_user_session_path
@@ -64,6 +64,8 @@ class CheckoutController < ApplicationController
   end
 
   def build_line_item(product)
+    Rails.logger.debug "Product: #{product.product_name}, Price: #{product.price}, Unit Amount: #{product.price}"
+
     {
       price_data: {
         currency:     "cad",

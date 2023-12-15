@@ -15,7 +15,7 @@ class Customer < ApplicationRecord
   def self.ransackable_associations(auth_object = nil)
     ["address", "orders"]
   end
-  validates :email_address, uniqueness: true
+  validates :email, uniqueness: true
   validates :customer_first, presence: true
   validates :customer_last, presence: true
 end
